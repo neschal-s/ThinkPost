@@ -31,7 +31,7 @@ const getEmoji = (visual) => {
 
 // 🚀 MAIN COMPONENT
 
-export default function Slide({ slide, format = "square" }) {
+export default function Slide({ slide, format = "square", onClick  }) {
   if (!slide) return null;
 
   const background = getBackground(slide.background);
@@ -56,7 +56,8 @@ export default function Slide({ slide, format = "square" }) {
 
   return (
     <div
-      className={`${sizeClass} ${layoutClass} p-6 rounded-xl shadow-md`}
+        onClick={onClick ? onClick : () => {}}
+      className={`${sizeClass} ${layoutClass} p-6 rounded-xl shadow-md cursor-pointer hover:shadow-xl transition duration-200`}
       style={{ background }}
     >
       {/* 🧠 Split Layout */}

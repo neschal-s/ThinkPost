@@ -8,6 +8,7 @@ function App() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
+
   const generateSlides = async () => {
     if (!prompt.trim()) return;
 
@@ -41,6 +42,35 @@ function App() {
 
     setLoading(false);
   };
+
+const editSlide = async (index) => {
+  const instruction = prompt("How do you want to edit this slide?");
+  if (!instruction) return;
+
+  const res = await fetch("http://localhost:5000/edit-slide", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      slide: slides[index],
+      instruction,
+    }),
+  });
+
+  const data = await res.json();
+
+  const newSlides = [...slides];
+  newSlides[index] = data.slide;
+  setSlides(newSlides);
+};
+
+
+
+
+
+
+
 
   return (
     <div className="min-h-screen bg-gray-50 p-6">
@@ -104,7 +134,7 @@ function App() {
         {slides.length > 0 ? (
           <div className="flex gap-6 overflow-x-auto pb-4">
             {slides.map((slide, i) => (
-              <Slide key={i} slide={slide} format={format} />
+              <Slide key={i} slide={slide} format={format} onClick={() => editSlide(i)} />
             ))}
           </div>
         ) : (
